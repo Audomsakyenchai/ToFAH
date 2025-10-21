@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter for You</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400&display=swap');
+
+        body {
+            font-family: 'Mitr', sans-serif;
+            background-color: #fffafb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* ซ่อนส่วนที่ล้นจอ */
+        }
+
+        .container {
+            position: relative;
+            cursor: pointer;
+            z-index: 10; /* ให้จดหมายอยู่หน้ากระต่าย */
+        }
+
+        /* ซองจดหมาย */
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 210px;
+            background-color: #fce4ec;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease-in-out;
+            z-index: 10; 
+        }
+
+        /* หัวใจและข้อความบนซอง */
+        .envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 12; 
+            transition: opacity 0.5s ease-out; 
+        }
+
+        .heart {
+            font-size: 50px;
+            color: #f48fb1;
+            animation: beat 1.5s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .click-text {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ad1457;
+            font-weight: 300;
+        }
+
+        /* ตัวจดหมาย (ที่ซ่อนอยู่) */
+        .letter {
+            position: absolute;
+            top: 10px; 
+            left: 10px;
+            right: 10px;
+            background-color: #ffffff;
+            border: 1px solid #fce4ec;
+            border-radius: 5px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0; 
+            transform: translateY(0px); 
+            z-index: 5; 
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                        opacity 0.5s 0.2s ease-out; 
+        }
+
+        .letter h2 { margin-top: 0; color: #ad1457; font-size: 16px; }
+        .letter p { font-size: 14px; color: #333; line-height: 1.6; }
+
+        /* เมื่อคลิก (เพิ่มคลาส 'open') */
+        .container.open .letter {
+            transform: translateY(-150px); 
+            opacity: 1;
+            z-index: 20; 
+        }
+        .container.open .envelope-front {
+            opacity: 0; 
+        }
+        
+        /* === [!!! จุดแก้ไขสำคัญ: พื้นหลังกระต่าย !!!] === */
+        /* ลบ body::before, body::after ของเก่าที่เป็นดอกไม้ออก */
+        
+        .bg-rabbit {
+            position: absolute; /* วางตำแหน่งลอยตัว */
+            height: auto;
+            opacity: 0.4; /* ทำให้จางๆ จะได้ไม่แย่งซีน */
+            z-index: 1; /* อยู่หลังจดหมาย (z-index: 10) */
+            pointer-events: none; /* ทำให้คลิกทะลุรูปไปได้ */
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* อนิเมชั่นเด้งๆ */
+        }
+
+        /* จัดตำแหน่งกระต่ายแต่ละตัว */
+        #rabbit1 {
+            width: 180px;
+            bottom: -30px; /* โผล่มาจากข้างล่างซ้าย */
+            left: -40px;
+            transform: rotate(-15deg);
+        }
+        
+        #rabbit2 {
+            width: 150px;
+            top: -20px; /* โผล่มาจากข้างบนขวา */
+            right: -30px;
+            transform: rotate(10deg);
+        }
+        
+        #rabbit3 {
+            width: 130px;
+            top: 80px; /* แอบอยู่หลังจดหมายด้านซ้าย */
+            left: 10px;
+            opacity: 0.2; /* ตัวนี้จางเป็นพิเศษ */
+            transform: rotate(5deg);
+        }
+        
+        /* อนิเมชั่น "เทพ": เมื่อจดหมายเปิด... กระต่ายจะขยับ! */
+        .container.open ~ #rabbit1 {
+            opacity: 0.8;
+            transform: rotate(-10deg) scale(1.1); /* ขยับและขยาย */
+        }
+        .container.open ~ #rabbit2 {
+            opacity: 0.8;
+            transform: rotate(5deg) scale(1.1);
+        }
+        .container.open ~ #rabbit3 {
+            opacity: 0.5;
+            transform: rotate(0deg) scale(1.05);
+        }
+
+    </style>
+    </head>
+<body>
+
+    <div class="container" id="loveLetter">
+        
+        <div class="envelope">
+            <div class="envelope-front">
+                <div class="heart">💖</div>
+                <p class="click-text">click once and pull out the letter!</p>
+            </div>
+        </div>
+
+        <div class="letter">
+            
+            <h2>To FAH</h2> 
+            
+            <p>
+                นี่เราก็คุยกันมา 3 เดือนแล้วว<br>
+                โครตไวเลยแกว่าไหมฟ้าาาา 🐰
+            </p>
+            <p>
+                เราคุยกับแกครั้งแรกตอน 21 July 2025
+                สำหรับเราทุกเวลามีค่า มีสิ่งที่สำคัญเสมอ
+                กอดๆ นะฟ้าขอโทษถ้าเราชอบทำตัวไม่น่ารัก 
+		ขอกอดหน่อยครับ หยอกๆฟ้าาา 💖            
+</p>
+
+            </div>
+
+    </div>
+    <img src="rabbit1.png" alt="rabbit" class="bg-rabbit" id="rabbit1">
+    <img src="rabbit2.png" alt="rabbit" class="bg-rabbit" id="rabbit2">
+    <img src="rabbit3.png" alt="rabbit" class="bg-rabbit" id="rabbit3">
+
+
+    <script>
+        document.getElementById('loveLetter').addEventListener('click', function() {
+            this.classList.toggle('open');
+        });
+    </script>
+    </body>
+</html>
