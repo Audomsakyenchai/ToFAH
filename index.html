@@ -26,7 +26,6 @@
             width: 320px; 
         }
 
-        /* ซองจดหมาย */
         .envelope {
             position: relative;
             width: 100%; 
@@ -39,7 +38,6 @@
             z-index: 10; 
         }
 
-        /* หัวใจและข้อความบนซอง */
         .envelope-front {
             position: absolute;
             width: 100%;
@@ -72,7 +70,6 @@
             padding: 0 10px; 
         }
 
-        /* ตัวจดหมาย (ที่ซ่อนอยู่) */
         .letter {
             position: absolute;
             top: 10px; 
@@ -94,116 +91,68 @@
         .letter h2 { margin-top: 0; color: #ad1457; font-size: 16px; }
         .letter p { font-size: 14px; color: #333; line-height: 1.6; }
 
-        /* เมื่อคลิก (เพิ่มคลาส 'open') */
-        /* นี่คือส่วนที่แก้บั๊กจอมือถือ (v6) */
+        /* ปรับตำแหน่งตอนเปิดใหม่ */
         .container.open .letter {
-            transform: translateY(-80%); 
+            transform: translateY(-50%); /* สูงขึ้นจาก -35% → -50% */
             opacity: 1;
             z-index: 20; 
             max-height: 80vh; 
             overflow-y: auto; 
             padding-bottom: 50px;
         }
+
         .container.open .envelope-front {
             opacity: 0; 
         }
-        
-        /* === [!!! จุดแก้ไขสำคัญ: พื้นหลังกระต่าย 4 มุม !!!] === */
-        
+
+        /* กระต่ายพื้นหลัง */
         .bg-rabbit {
             position: absolute; 
             height: auto;
-            opacity: 0.5; /* ทำให้จางๆ */
+            opacity: 0.5;
             z-index: 1; 
             pointer-events: none; 
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            
-            /* (แก้ไข) กำหนดขนาดเริ่มต้นสำหรับจอมือถือ */
             width: 120px; 
         }
 
-        /* กระต่ายตัวที่ 1: ล่างซ้าย (Bottom-Left) */
-        #rabbit1 {
-            bottom: -20px; 
-            left: -20px;
-            transform: rotate(-15deg);
-        }
-        
-        /* กระต่ายตัวที่ 2: บนขวา (Top-Right) */
-        #rabbit2 {
-            top: -20px; 
-            right: -20px;
-            transform: rotate(15deg);
-        }
-        
-        /* (แก้ไข) กระต่ายตัวที่ 3: บนซ้าย (Top-Left) */
-        #rabbit3 {
-            top: -20px; 
-            left: -20px;
-            transform: rotate(10deg) scaleX(-1); /* กลับด้าน */
-        }
+        #rabbit1 { bottom: -20px; left: -20px; transform: rotate(-15deg); }
+        #rabbit2 { top: -20px; right: -20px; transform: rotate(15deg); }
+        #rabbit3 { top: -20px; left: -20px; transform: rotate(10deg) scaleX(-1); }
+        #rabbit4 { bottom: -20px; right: -20px; transform: rotate(-10deg) scaleX(-1); opacity: 0.4; }
 
-        /* (แก้ไข) กระต่ายตัวที่ 4: ล่างขวา (Bottom-Right) */
-        #rabbit4 {
-            bottom: -20px;
-            right: -20px; 
-            transform: rotate(-10deg) scaleX(-1); /* กลับด้าน */
-            opacity: 0.4;
-        }
-        
-        /* อนิเมชั่น "เทพ": เมื่อจดหมายเปิด... กระต่ายจะขยับ! */
         .container.open ~ #rabbit1 { opacity: 0.9; transform: rotate(-10deg) scale(1.1); }
         .container.open ~ #rabbit2 { opacity: 0.9; transform: rotate(5deg) scale(1.1); }
         .container.open ~ #rabbit3 { opacity: 0.8; transform: rotate(5deg) scale(1.1) scaleX(-1); }
         .container.open ~ #rabbit4 { opacity: 0.8; transform: rotate(0deg) scale(1.1) scaleX(-1); }
 
-
-        /* === [!!! Media Queries: ทำให้ Responsive สำหรับมือถือ !!!] === */
-        
-        /* เมื่อจอใหญ่ขึ้น (Desktop/Tablet) */
         @media (min-width: 600px) { 
-            /* ขยายขนาดกระต่าย */
-            .bg-rabbit {
-                width: 150px;
-            }
+            .bg-rabbit { width: 150px; }
             #rabbit1 { width: 180px; bottom: -30px; left: -40px; }
             #rabbit2 { width: 180px; top: -30px; right: -40px; }
             #rabbit3 { width: 150px; top: -30px; left: -40px; }
             #rabbit4 { width: 150px; bottom: -30px; right: -40px; }
 
-            /* ให้จดหมายลอยสูงขึ้นบนจอใหญ่ (เหมือนเดิม) */
-             .container.open .letter {
-                transform: translateY(-150px); 
+            .container.open .letter {
+                transform: translateY(-90px); /* เดิม -60px → สูงขึ้นเล็กน้อย */
             }
         }
         
-        /* เมื่อจอเล็กมาก (Small mobile) */
         @media (max-width: 380px) { 
-            .container {
-                width: 90%; 
-            }
-            .letter {
-                padding: 15px; 
-                font-size: 15px; 
-            }
-            .letter h2 {
-                font-size: 16px;
-            }
+            .container { width: 90%; }
+            .letter { padding: 15px; font-size: 15px; }
+            .letter h2 { font-size: 16px; }
             .container.open .letter {
-                transform: translateY(-70%); 
+                transform: translateY(-45%); /* เดิม -30% → สูงขึ้น */
             }
-            /* ลดขนาดกระต่ายบนจอเล็กสุดๆ */
-            .bg-rabbit {
-                width: 90px;
-            }
+            .bg-rabbit { width: 90px; }
         }
 
     </style>
-    </head>
+</head>
 <body>
 
     <div class="container" id="loveLetter">
-        
         <div class="envelope">
             <div class="envelope-front">
                 <div class="heart">💖</div>
@@ -212,33 +161,31 @@
         </div>
 
         <div class="letter">
-            
-            <h2>To FAH</h2> <p>
+            <h2>To FAH</h2>
+            <p>
                 นี่เราก็คุยกันมา 3 เดือนแล้วว<br>
                 โครตไวเลย แกว่าไหมฟ้าาาา  
             </p>
             <p>
-                เราคุยกับแกครั้งแรกตอน 21 July 2025
-                สำหรับเราทุกเวลามีค่า มีสิ่งที่สำคัญเสมอ 🐰
-                กอดๆ นะฟ้าขอโทษถ้าเราชอบทำตัวไม่น่ารัก
-		ขอกอดหน่อยครับ หยอกๆฟ้าาา 💖
+                เราคุยกับแกครั้งแรกตอน 21 July 2025<br>
+                สำหรับเราทุกเวลามีค่า มีสิ่งที่สำคัญเสมอ 🐰<br>
+                กอดๆ นะฟ้าขอโทษถ้าเราชอบทำตัวไม่น่ารัก<br>
+                ขอกอดหน่อยครับ หยอกๆฟ้าาา 💖
             </p>
-
-            </div>
-
+        </div>
     </div>
+
     <img src="rabbit1.png" alt="rabbit" class="bg-rabbit" id="rabbit1">
     <img src="rabbit2.png" alt="rabbit" class="bg-rabbit" id="rabbit2">
     <img src="rabbit3.png" alt="rabbit" class="bg-rabbit" id="rabbit3">
     <img src="rabbit4.png" alt="rabbit" class="bg-rabbit" id="rabbit4"> 
-
 
     <script>
         document.getElementById('loveLetter').addEventListener('click', function() {
             this.classList.toggle('open');
         });
     </script>
-    </body>
+</body>
 </html>
 
 
